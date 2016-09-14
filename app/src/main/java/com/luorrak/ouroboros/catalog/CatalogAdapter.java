@@ -79,7 +79,11 @@ public class CatalogAdapter extends CursorRecyclerAdapter implements Filterable 
         }
 
         if (catalogViewHolder.catalogObject.tim != null){
-            imageUrl = ChanUrls.getThumbnailUrl(boardName, catalogViewHolder.catalogObject.tim);
+            imageUrl = ChanUrls.getThumbnailUrl(
+                boardName,
+                catalogViewHolder.catalogObject.tim,
+                catalogViewHolder.catalogObject.ext
+            );
             networkHelper.getImageNoCrossfade(catalogViewHolder.catalogPicture, imageUrl);
         } else if (catalogViewHolder.catalogObject.embed != null) {
             youtubeData = Util.parseYoutube(catalogViewHolder.catalogObject.embed);
@@ -131,6 +135,7 @@ public class CatalogAdapter extends CursorRecyclerAdapter implements Filterable 
         catalogViewHolder.catalogObject.sub = cursor.getString(cursor.getColumnIndex(DbContract.CatalogEntry.COLUMN_CATALOG_SUB));
         catalogViewHolder.catalogObject.com = cursor.getString(cursor.getColumnIndex(DbContract.CatalogEntry.COLUMN_CATALOG_COM));
         catalogViewHolder.catalogObject.tim = cursor.getString(cursor.getColumnIndex(DbContract.CatalogEntry.COLUMN_CATALOG_TIM));
+        catalogViewHolder.catalogObject.ext = cursor.getString(cursor.getColumnIndex(DbContract.CatalogEntry.COLUMN_CATALOG_EXT));
         catalogViewHolder.catalogObject.replyCount = String.valueOf(cursor.getInt(cursor.getColumnIndex(DbContract.CatalogEntry.COLUMN_CATALOG_REPLIES)));
         catalogViewHolder.catalogObject.imageReplyCount = String.valueOf(cursor.getInt(cursor.getColumnIndex(DbContract.CatalogEntry.COLUMN_CATALOG_IMAGES)));
         catalogViewHolder.catalogObject.locked = cursor.getInt(cursor.getColumnIndex(DbContract.CatalogEntry.COLUMN_CATALOG_LOCKED));
@@ -198,12 +203,12 @@ public class CatalogAdapter extends CursorRecyclerAdapter implements Filterable 
         String sub;
         String com;
         String tim;
+        String ext;
         String replyCount;
         String imageReplyCount;
         int locked;
         int sticky;
         String embed;
         int itemViewType;
-
     }
 }

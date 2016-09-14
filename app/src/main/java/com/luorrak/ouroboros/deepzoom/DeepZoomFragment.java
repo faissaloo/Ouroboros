@@ -11,7 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -108,7 +107,11 @@ public class DeepZoomFragment extends Fragment{
         progressBar.setVisibility(View.VISIBLE);
 
         Ion.with(photoView)
-                .load(ChanUrls.getThumbnailUrl(boardName, mediaItem.fileName))
+                .load(ChanUrls.getThumbnailUrl(
+                    boardName,
+                    mediaItem.fileName,
+                    mediaItem.ext
+                ))
                 .withBitmapInfo()
                 .setCallback(new FutureCallback<ImageViewBitmapInfo>() {
                     @Override
@@ -128,7 +131,11 @@ public class DeepZoomFragment extends Fragment{
                         Ion.with(photoView)
                                 .crossfade(true)
                                 .deepZoom()
-                                .load(ChanUrls.getImageUrl(boardName, mediaItem.fileName, mediaItem.ext))
+                                .load(ChanUrls.getImageUrl(
+                                    boardName,
+                                    mediaItem.fileName,
+                                    mediaItem.ext
+                                ))
                                 .withBitmapInfo();
                     }
                 });
@@ -143,7 +150,11 @@ public class DeepZoomFragment extends Fragment{
             mediaPlayButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Uri uri = Uri.parse(ChanUrls.getImageUrl(boardName, mediaItem.fileName, mediaItem.ext));
+                    final Uri uri = Uri.parse(ChanUrls.getImageUrl(
+                        boardName,
+                        mediaItem.fileName,
+                        mediaItem.ext
+                    ));
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.setDataAndType(uri, "video/" + mediaItem.ext.substring(1));
                     startActivity(intent);
@@ -189,14 +200,23 @@ public class DeepZoomFragment extends Fragment{
                 break;
             }
             case R.id.action_external_browser: {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ChanUrls.getImageUrl(boardName, mediaItem.fileName, mediaItem.ext)));
+                final Uri uri = Uri.parse(ChanUrls.getImageUrl(
+                    boardName,
+                    mediaItem.fileName,
+                    mediaItem.ext
+                ));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(browserIntent);
                 break;
             }
             case R.id.menu_item_share: {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
-                String shareBody = ChanUrls.getImageUrl(boardName, mediaItem.fileName, mediaItem.ext);
+                String shareBody = ChanUrls.getImageUrl(
+                    boardName,
+                    mediaItem.fileName,
+                    mediaItem.ext
+                );
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(shareIntent, "Share via"));
                 break;

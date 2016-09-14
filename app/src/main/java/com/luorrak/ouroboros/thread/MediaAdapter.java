@@ -132,7 +132,11 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         }
 
         if (validExt.contains(media.ext)){
-            String imageUrl = ChanUrls.getThumbnailUrl(boardName, media.fileName);
+            String imageUrl = ChanUrls.getThumbnailUrl(
+                boardName,
+                media.fileName,
+                media.ext
+            );
             if (SettingsHelper.getImageOptions(context) != 3){
                 Ion.with(mediaViewHolder.mediaImage)
                         .smartSize(true)
@@ -153,13 +157,21 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                                     Ion.with(result.getImageView())
                                             .crossfade(true)
                                             .smartSize(true)
-                                            .load(ChanUrls.getImageUrl(boardName, media.fileName, media.ext))
+                                            .load(ChanUrls.getImageUrl(
+                                                boardName,
+                                                media.fileName,
+                                                media.ext
+                                            ))
                                             .withBitmapInfo();
                                 } else if (SettingsHelper.getImageOptions(context) == 0){
                                     Ion.with(result.getImageView())
                                             .crossfade(true)
                                             .smartSize(true)
-                                            .load(ChanUrls.getImageUrl(boardName, media.fileName, media.ext))
+                                            .load(ChanUrls.getImageUrl(
+                                                boardName,
+                                                media.fileName,
+                                                media.ext
+                                            ))
                                             .withBitmapInfo();
                                 }
 
@@ -180,7 +192,12 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 }
             });
         } else if (media.ext.equals(".webm") || media.ext.equals(".mp4")){
-            String imageUrl = ChanUrls.getThumbnailUrl(boardName, media.fileName);
+            String imageUrl = ChanUrls.getThumbnailUrl(
+                boardName,
+                media.fileName,
+                media.ext
+            );
+
             Ion.with(mediaViewHolder.mediaImage)
                     .smartSize(true)
                     .crossfade(true)
@@ -202,7 +219,11 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 mediaViewHolder.playButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Uri uri = Uri.parse(ChanUrls.getImageUrl(boardName, media.fileName, media.ext));
+                        Uri uri = Uri.parse(ChanUrls.getImageUrl(
+                            boardName,
+                            media.fileName,
+                            media.ext
+                        ));
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(uri, "video/webm");
                         mediaViewHolder.itemView.getContext().startActivity(intent);
@@ -212,7 +233,11 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 mediaViewHolder.playButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Uri uri = Uri.parse(ChanUrls.getImageUrl(boardName, media.fileName, media.ext));
+                        Uri uri = Uri.parse(ChanUrls.getImageUrl(
+                            boardName,
+                            media.fileName,
+                            media.ext
+                        ));
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(uri, "video/mp4");
                         mediaViewHolder.itemView.getContext().startActivity(intent);
