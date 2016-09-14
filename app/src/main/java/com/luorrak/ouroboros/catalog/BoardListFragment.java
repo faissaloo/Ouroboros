@@ -56,6 +56,7 @@ import com.luorrak.ouroboros.util.InfiniteDbHelper;
 public class BoardListFragment extends Fragment implements OnStartDragListener {
     private NavigationBoardListAdapter boardListAdapter;
     private ItemTouchHelper touchHelper;
+    private InfiniteDbHelper infiniteDbHelper;
 
     public BoardListFragment() {
     }
@@ -67,7 +68,13 @@ public class BoardListFragment extends Fragment implements OnStartDragListener {
         getActivity().setTitle("Boards");
         View view = inflater.inflate(R.layout.fragment_board_list, container, false);
 
-        InfiniteDbHelper infiniteDbHelper = new InfiniteDbHelper(getActivity());
+        if (infiniteDbHelper != null) {
+            // Clear any previous incarnations of the database helper
+            // to prevent the database from remaining locked.
+            infiniteDbHelper.close();
+        }
+
+        infiniteDbHelper = new InfiniteDbHelper(getActivity());
         Cursor boardListCursor = infiniteDbHelper.getBoardCursor();
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.board_list);

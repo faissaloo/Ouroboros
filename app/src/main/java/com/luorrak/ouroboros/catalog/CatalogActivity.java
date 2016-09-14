@@ -3,6 +3,7 @@ package com.luorrak.ouroboros.catalog;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -189,7 +190,20 @@ public class CatalogActivity extends AppCompatActivity implements NavigationView
     public void launchBoardFragment(String board){
         this.board = board; //The real reason for this method being here
         CatalogFragment catalogFragment = new CatalogFragment().newInstance(board);
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.activity_catalog_fragment_container, catalogFragment).commit();
+
+
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction =
+            fragmentManager.beginTransaction();
+        fragmentTransaction
+            .replace(
+                R.id.activity_catalog_fragment_container,
+                catalogFragment
+            )
+            .addToBackStack("Back To Board Catalog")
+            .commit();
+        // This call is required to prevent app crashes
+        // when quickly pushing and popping the fragment stack.
+        fragmentManager.executePendingTransactions();
     }
 }
