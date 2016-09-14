@@ -253,7 +253,8 @@ public class NetworkHelper {
     }
 
     public void downloadFile(String boardName, String tim, String ext, Context context){
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(ChanUrls.getImageUrl(boardName, tim, ext)));
+        Uri uri = Uri.parse(ChanUrls.getImageUrl(boardName, tim, ext));
+        DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setDescription(tim + ext);
         request.setTitle(tim + ext);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS + "/Ouroboros", tim + ext);

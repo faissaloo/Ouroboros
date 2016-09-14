@@ -14,7 +14,6 @@ import com.luorrak.ouroboros.R;
 import com.luorrak.ouroboros.deepzoom.DeepZoomActivity;
 import com.luorrak.ouroboros.util.ChanUrls;
 import com.luorrak.ouroboros.util.Media;
-import com.luorrak.ouroboros.util.NetworkHelper;
 import com.luorrak.ouroboros.util.Util;
 
 import java.util.ArrayList;
@@ -66,7 +65,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         resetView(galleryViewHolder);
 
         Ion.with(galleryViewHolder.galleryImage)
-                .load(ChanUrls.getThumbnailUrl(boardName, media.fileName))
+                .load(ChanUrls.getThumbnailUrl(
+                    boardName,
+                    media.fileName,
+                    media.ext
+                ))
                 .withBitmapInfo();
 
         if (validExt.contains(media.ext)){

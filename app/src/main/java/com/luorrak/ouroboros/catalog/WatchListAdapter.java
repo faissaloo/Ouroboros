@@ -64,8 +64,15 @@ public class WatchListAdapter extends CursorRecyclerAdapter implements TouchHelp
 
         if (watchlistViewHolder.watchlistObject.serializedMediaList != null){
             ArrayList<Media> deserializedMediaList = (ArrayList<Media>) Util.deserializeObject(watchlistViewHolder.watchlistObject.serializedMediaList);
+
+            final Media media = deserializedMediaList.get(0);
+
             Ion.with(watchlistViewHolder.watchlistThumbnail)
-                    .load(ChanUrls.getThumbnailUrl(watchlistViewHolder.watchlistObject.board, deserializedMediaList.get(0).fileName))
+                    .load(ChanUrls.getThumbnailUrl(
+                        watchlistViewHolder.watchlistObject.board,
+                        media.fileName,
+                        media.ext
+                    ))
                     .withBitmapInfo();
         }
     }
