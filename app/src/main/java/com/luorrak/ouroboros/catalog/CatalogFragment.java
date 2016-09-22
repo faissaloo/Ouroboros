@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import com.google.gson.JsonArray;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.future.ResponseFuture;
 import com.luorrak.ouroboros.R;
 import com.luorrak.ouroboros.reply.ReplyCommentActivity;
 import com.luorrak.ouroboros.util.ChanUrls;
@@ -69,6 +70,7 @@ public class CatalogFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private CatalogNetworkFragment networkFragment;
     private ActionProvider shareActionProvider;
     private ProgressBar progressBar;
+    private ResponseFuture<JsonArray> currentCatalogRequest;
 
     public CatalogFragment() {
     }
@@ -271,11 +273,16 @@ public class CatalogFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onDestroy() {
+        if (currentCatalogRequest != null) {
+            currentCatalogRequest.cancel();
+        }
+
         if (networkFragment != null){
             if (networkFragment.getStatus() == AsyncTask.Status.FINISHED){
                 networkFragment.cancelTask();
             }
         }
+
         super.onDestroy();
     }
 
@@ -283,26 +290,43 @@ public class CatalogFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void getCatalogJson(final Context context, final String boardName) {
         String catalogJsonUrl = ChanUrls.getCatalogUrl(boardName);
         progressBar.setVisibility(View.VISIBLE);
-        Ion.with(context)
-                .load(catalogJsonUrl)
-                .setLogging(LOG_TAG, Log.DEBUG)
-                .asJsonArray()
-                .setCallback(new FutureCallback<JsonArray>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonArray jsonArray) {
-                        if (e == null) {
-                            networkFragment.beginTask(jsonArray, infiniteDbHelper, boardName, catalogAdapter);
-                        } else {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            swipeRefreshLayout.setRefreshing(false);
-                            if (getActivity() != null){
-                                Snackbar.make(getView(), "Error retrieving catalog", Snackbar.LENGTH_LONG).show();
-                            }
-                        }
 
-                        catalogAdapter.changeCursor(getSortedCursor());
+        currentCatalogRequest = Ion.with(context)
+                .load(catalogJsonUrl)
+                .asJsonArray();
+
+        currentCatalogRequest.setCallback(new FutureCallback<JsonArray>() {
+            @Override
+            public void onCompleted(Exception e, JsonArray jsonArray) {
+                if (e == null) {
+                    networkFragment.beginTask(jsonArray, infiniteDbHelper, boardName, catalogAdapter);
+                } else {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    if (getActivity() != null){
+                        // The View can be null when requests are cancelled.
+                        View view = getView();
+
+                        if (view != null) {
+                            Snackbar.make(
+                                view,
+                                "Error retrieving catalog",
+                                Snackbar.LENGTH_LONG
+                            ).show();
+                        }
                     }
-                });
+                }
+
+                if (getActivity() != null) {
+                    catalogAdapter.changeCursor(getSortedCursor());
+                }
+
+                // Clear the reference to the current request, now
+                // that it is complete.
+                currentCatalogRequest = null;
+            }
+        });
     }
 
     @Override
