@@ -59,7 +59,7 @@ public class NetworkHelper {
     public void postReply(final Context context, final Reply reply, final SharedPreferences sharedPreferences,
                           final JsonParser jsonParser, final InfiniteDbHelper infiniteDbHelper, final View view){
         String postUrl = ChanUrls.getReplyUrl();
-        String referalUrl = ChanUrls.getThreadHtmlUrl(reply.board, reply.resto);
+        final String referalUrl = ChanUrls.getThreadHtmlUrl(reply.board, reply.resto);
 
         if (needDNSBLCaptcha) {
             ArrayList<Part> dnsblparameters = new ArrayList<Part>();
@@ -116,11 +116,11 @@ public class NetworkHelper {
                 .setHeader("Referer", referalUrl)
                 .setHeader("Origin", "https://8ch.net")
                 .addMultipartParts(parameters)
-                .asJsonObject()
+                .asString()
                 .withResponse()
-                .setCallback(new FutureCallback<Response<JsonObject>>() {
+                .setCallback(new FutureCallback<Response<String>>() {
                     @Override
-                    public void onCompleted(Exception e, Response<JsonObject> jsonObjectResponse) {
+                    public void onCompleted(Exception e, Response<String> result) {
                         ReplyCommentFragment.finishedPosting();
                         String boardName;
                         String userPostNo;
@@ -130,8 +130,8 @@ public class NetworkHelper {
                             Snackbar.make(view, "Data did NOT post successfully", Snackbar.LENGTH_LONG).show();
                             return;
                         }
-                        if (jsonObjectResponse.getHeaders().code() == 200 ){
-                            captchaTest(jsonObjectResponse.getResult());
+                        if (result.getHeaders().code() == 200 ){
+                            captchaTestWithString(result.getResult());
                             if (needDNSBLCaptcha){
                                 Snackbar.make(view, "Please fill out DNSBL Captcha", Snackbar.LENGTH_LONG).show();
 
@@ -148,14 +148,17 @@ public class NetworkHelper {
 
                                 getCaptcha(context, view);
                                 return;
-                            } else if (jsonObjectResponse.getResult().has("error")){
+                            } else if (result.getResult().contains("error")){
                                 //unknown error
-                                Snackbar.make(view, jsonObjectResponse.getResult().get("error").getAsString(), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(view, result.getResult(), Snackbar.LENGTH_LONG).show();
                                 return;
                             }
 
-                            boardName = jsonParser.getSubmittedBoardName(jsonObjectResponse.getResult());
-                            userPostNo = jsonParser.getUserPostNo(jsonObjectResponse.getResult());
+                            //// TODO: 9/22/16 remove this once 8chan's servers are fixed
+                            com.google.gson.JsonParser gsonParser = new com.google.gson.JsonParser();
+                            JsonObject jsonObject = (JsonObject) gsonParser.parse(result.getResult());
+                            boardName = jsonParser.getSubmittedBoardName(jsonObject);
+                            userPostNo = jsonParser.getUserPostNo(jsonObject);
 
                             infiniteDbHelper.insertUserPostEntry(boardName, userPostNo, reply.resto, reply.subject, reply.comment);
 
@@ -168,7 +171,7 @@ public class NetworkHelper {
                             ((Activity) context).finish();
                         } else {
                             //There is a crash here sometimes.
-                            Log.e(LOG_TAG, "Failed Post " + jsonObjectResponse.getHeaders().message() + " code " + jsonObjectResponse.getHeaders().code());
+                            Log.e(LOG_TAG, "Failed Post " + result.getHeaders().message() + " code " + result.getHeaders().code());
                             Snackbar.make(view, "Data did NOT post successfully", Snackbar.LENGTH_LONG).show();
                         }
 
@@ -213,6 +216,22 @@ public class NetworkHelper {
             needDNSBLCaptcha = true;
             return "needDNSBLCaptcha";
         } else if (error.getAsString().contains("entrypoint.php")){
+            genericCaptcha = true;
+            return "Captcha";
+        } else {
+            return null;
+        }
+    }
+
+    //temp work around to 8chan's servers returning bad data
+
+    private String captchaTestWithString(String result) {
+        if (result == null){
+            return null;
+        } else if (result.contains("dnsbls_bypass.php")){
+            needDNSBLCaptcha = true;
+            return "needDNSBLCaptcha";
+        } else if (result.contains("entrypoint.php")){
             genericCaptcha = true;
             return "Captcha";
         } else {
