@@ -11,6 +11,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.luorrak.ouroboros.R;
 import com.luorrak.ouroboros.catalog.CatalogActivity;
 import com.luorrak.ouroboros.util.SettingsHelper;
+import com.luorrak.ouroboros.util.ChanUrls;
 import com.luorrak.ouroboros.util.Util;
 
 /**
@@ -64,6 +65,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     } else {
                         Util.stopReplyCheckerService(getActivity());
                     }
+                    break;
+                }
+                case "use_onion_url": {
+                    ChanUrls.setTor(SettingsHelper.getTorStatus(getActivity()));
                     break;
                 }
             }

@@ -60,5 +60,10 @@
             android:title="Reply Checker Enabled"
             android:summary="Enable/Disable Periodic Checks for new replies"
             android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="use_onion_url"
+            android:title="Post Via Tor"
+            android:summary="Orbot must be configured to route Ouroboros traffic"
+            android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>

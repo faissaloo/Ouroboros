@@ -21,9 +21,6 @@ import android.net.Uri;
  */
 public class ChanUrls {
 
-    private static final String SCHEME = "https";
-    private static final String DOMAIN_NAME = "8ch.net";
-    private static final String POST_SUBDOMAIN_NAME = "sys.8ch.net";
     private static final String CATALOG_ENDPOINT = "catalog.json"; //http(s)://siteurl/board/catalog.json
     private static final String THREAD_FOLDER = "res"; //http(s):///siteurl/board/res/threadnumber.json
     private static final String THREAD_ENDPOINT = ".json";
@@ -34,6 +31,10 @@ public class ChanUrls {
     private static final String POST_ENDPOINT = "post.php";
     private static final String DNSBL_ENDPOINT = "dnsbls_bypass.php"; //https://8ch.net/dnsbls_bypass.php
     private static final int OLD_TIM_MAX_LENGTH = 16;
+
+    private static String scheme = "https";
+    private static String domainName = "8ch.net";
+    private static String postSubdomainName = "sys."+domainName;
 
     /**
      * Determine if the file uses an older 8chan URL.
@@ -52,8 +53,8 @@ public class ChanUrls {
 
     public static String getCatalogUrl(String boardName){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(boardName)
                 .appendPath(CATALOG_ENDPOINT)
                 .build();
@@ -62,8 +63,8 @@ public class ChanUrls {
 
     public static String getCatalogUrlExternal(String boardName){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(boardName)
                 .appendPath("catalog.html")
                 .build();
@@ -71,8 +72,8 @@ public class ChanUrls {
     }
     public static String getThreadUrl(String boardName, String no){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(boardName)
                 .appendPath(THREAD_FOLDER)
                 .appendPath(no + THREAD_ENDPOINT)
@@ -82,8 +83,8 @@ public class ChanUrls {
 
     public static String getThreadUrlExternal(String boardName, String no){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(boardName)
                 .appendPath(THREAD_FOLDER)
                 .appendPath(no + ".html")
@@ -109,15 +110,15 @@ public class ChanUrls {
             // Some older files use an old path including the board name.
             // The old images always use JPEG thumbnails, apart from some
             // special board images we will just ignore.
-            builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+            builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(boardName)
                 .appendPath(OLD_IMAGE_THUMBNAIL_DIRECTORY)
                 .appendPath(tim + ".jpg")
                 .build();
         } else {
-            builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+            builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(IMAGE_THUMBNAIL_DIRECTORY)
                 .appendPath(tim + ext)
                 .build();
@@ -131,15 +132,15 @@ public class ChanUrls {
 
         if (isOldTim(tim)) {
             // Some older files use an old path including the board name.
-            builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+            builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(boardName)
                 .appendPath(OLD_IMAGE_DIRECTORY)
                 .appendPath(tim + ext)
                 .build();
         } else {
-            builder.scheme(SCHEME)
-                .authority(DOMAIN_NAME)
+            builder.scheme(scheme)
+                .authority(domainName)
                 .appendPath(IMAGE_DIRECTORY)
                 .appendPath(tim + ext)
                 .build();
@@ -149,13 +150,13 @@ public class ChanUrls {
     }
 
     public static String getSpoilerUrl(){
-        return SCHEME + "://8ch.net/static/spoiler.png";
+        return scheme + "://"+domainName+"/static/spoiler.png";
     }
 
     public static String getReplyUrl(){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME) //https://8ch.net/post.php
-                .authority(POST_SUBDOMAIN_NAME)
+        builder.scheme(scheme) //https://8ch.net/post.php
+                .authority(postSubdomainName)
                 .appendPath(POST_ENDPOINT)
                 .build();
         return builder.toString();
@@ -163,8 +164,8 @@ public class ChanUrls {
 
     public static String getDeletePostUrl(){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME) //https://8ch.net/post.php
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme) //https://8ch.net/post.php
+                .authority(domainName)
                 .appendPath(POST_ENDPOINT)
                 .build();
         return builder.toString();
@@ -172,8 +173,8 @@ public class ChanUrls {
 
     public static String getThreadHtmlUrl(String boardName, String no){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME) //http://8ch.net/test/res/7102.html
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme) //http://8ch.net/test/res/7102.html
+                .authority(domainName)
                 .appendPath(boardName)
                 .appendPath(THREAD_FOLDER)
                 .appendPath(no + ".html")
@@ -183,8 +184,8 @@ public class ChanUrls {
 
     public static String getDnsblUrl(){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME) //https://8ch.net/dnsbls_bypass.php
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme) //https://8ch.net/dnsbls_bypass.php
+                .authority(domainName)
                 .appendPath(DNSBL_ENDPOINT)
                 .build();
         return builder.toString();
@@ -192,8 +193,8 @@ public class ChanUrls {
 
     public static String getCaptchaEntrypoint(){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(SCHEME) //http://8ch.net/8chan-captcha/entrypoint.php?mode=get&extra=abcdefghijklmnopqrstuvwxyz&nojs=true
-                .authority(DOMAIN_NAME)
+        builder.scheme(scheme) //http://8ch.net/8chan-captcha/entrypoint.php?mode=get&extra=abcdefghijklmnopqrstuvwxyz&nojs=true
+                .authority(domainName)
                 .appendPath("8chan-captcha")
                 .appendPath("entrypoint.php")
                 .appendQueryParameter("mode", "get")
@@ -202,5 +203,24 @@ public class ChanUrls {
                 .build();
         return builder.toString();
     }
-
+    
+    public static void setTor(boolean enabled)
+    {
+        if (enabled)
+        {
+            scheme = "http";
+            domainName = "oxwugzccvk3dk6tj.onion";
+        }
+        else
+        {
+            scheme = "https";
+            domainName = "8ch.net";
+        }
+        postSubdomainName = "sys."+domainName;
+    }
+    
+    public static String getDomain()
+    {
+    	return scheme+"://"+domainName;
+    }
 }

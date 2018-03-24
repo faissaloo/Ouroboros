@@ -26,6 +26,7 @@ import com.koushikdutta.ion.Response;
 import com.luorrak.ouroboros.R;
 import com.luorrak.ouroboros.api.JsonParser;
 import com.luorrak.ouroboros.reply.ReplyCommentFragment;
+import com.luorrak.ouroboros.util.ChanUrls;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -114,7 +115,7 @@ public class NetworkHelper {
         Ion.with(context)
                 .load(postUrl)
                 .setHeader("Referer", referalUrl)
-                .setHeader("Origin", "https://8ch.net")
+                .setHeader("Origin", ChanUrls.getDomain())
                 .addMultipartParts(parameters)
                 .asString()
                 .withResponse()
