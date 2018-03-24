@@ -19,7 +19,7 @@ import com.luorrak.ouroboros.util.Util;
 
 /**
  * Ouroboros - An 8chan browser
- * Copyright (C) 2015  Luorrak
+ * Copyright (C) 2015 Luorrak, 2018 Faissal Bensefia
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
