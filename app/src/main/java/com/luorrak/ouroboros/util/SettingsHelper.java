@@ -112,6 +112,6 @@ public class SettingsHelper {
     
     public static boolean getTorStatus(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean("use_onion_url", true);
+        return sharedPreferences.getBoolean("use_onion_url", false);
     }
 }

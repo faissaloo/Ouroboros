@@ -2,11 +2,14 @@ package com.luorrak.ouroboros.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.preference.PreferenceFragmentCompat;
+
+import info.guardianproject.netcipher.proxy.OrbotHelper;
 
 import com.luorrak.ouroboros.R;
 import com.luorrak.ouroboros.catalog.CatalogActivity;
@@ -41,7 +44,17 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preferences);
         getActivity().setTitle("Settings");
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        
+        //Make sure Orbot is installed before we enable Tor functionality
+        if (!OrbotHelper.isOrbotInstalled(getContext()))
+        {
+            getPreferenceScreen().findPreference("use_onion_url").setEnabled(false);
+            Editor editor = prefs.edit();
+            editor.putBoolean("use_onion_url",false);
+            editor.commit();
+        }
     }
 
     @Override
