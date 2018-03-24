@@ -68,7 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                     break;
                 }
                 case "use_onion_url": {
-                    ChanUrls.setTor(SettingsHelper.getTorStatus(getActivity()));
+                    ChanUrls.setTor(getContext(), SettingsHelper.getTorStatus(getActivity()));
                     break;
                 }
             }

@@ -23,6 +23,7 @@ import com.luorrak.ouroboros.util.DragAndDropRecyclerView.WatchListTouchHelper;
 import com.luorrak.ouroboros.util.InfiniteDbHelper;
 import com.luorrak.ouroboros.util.SettingsHelper;
 import com.luorrak.ouroboros.util.Util;
+import com.luorrak.ouroboros.util.ChanUrls;
 
 import java.util.Random;
 
@@ -56,6 +57,7 @@ public class CatalogActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Util.onActivityCreateSetTheme(this, SettingsHelper.getTheme(this));
+        ChanUrls.setTor(this, SettingsHelper.getTorStatus(this));
         super.onCreate(savedInstanceState);
         Ion.getDefault(getApplicationContext()).getCache().setMaxSize(150 * 1024 * 1024);
 

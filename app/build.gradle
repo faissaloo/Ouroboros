@@ -30,6 +30,7 @@ dependencies {
     compile 'com.koushikdutta.async:androidasync:2.1.7'
     compile 'com.google.code.gson:gson:2.4'
     compile 'org.jsoup:jsoup:1.8.2'
+    compile 'info.guardianproject.netcipher:netcipher:1.2'
 }
 
 dependencies {

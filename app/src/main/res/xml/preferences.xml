@@ -63,7 +63,7 @@
         <CheckBoxPreference
             android:key="use_onion_url"
             android:title="Post Via Tor"
-            android:summary="Orbot must be configured to route Ouroboros traffic"
+            android:summary="Anonymizes traffic and circumvents censorship"
             android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>

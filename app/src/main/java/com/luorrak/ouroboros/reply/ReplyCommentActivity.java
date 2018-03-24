@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import com.luorrak.ouroboros.R;
 import com.luorrak.ouroboros.util.SettingsHelper;
 import com.luorrak.ouroboros.util.Util;
+import com.luorrak.ouroboros.util.ChanUrls;
 
 /**
  * Ouroboros - An 8chan browser
@@ -32,6 +33,7 @@ public class ReplyCommentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Util.onActivityCreateSetTheme(this, SettingsHelper.getTheme(this));
+        ChanUrls.setTor(this, SettingsHelper.getTorStatus(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_comment_activity);
 

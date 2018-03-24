@@ -28,6 +28,7 @@ import com.luorrak.ouroboros.util.DragAndDropRecyclerView.WatchListTouchHelper;
 import com.luorrak.ouroboros.util.InfiniteDbHelper;
 import com.luorrak.ouroboros.util.SettingsHelper;
 import com.luorrak.ouroboros.util.Util;
+import com.luorrak.ouroboros.util.ChanUrls;
 
 /**
  * Ouroboros - An 8chan browser
@@ -58,6 +59,7 @@ public class ThreadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Util.onActivityCreateSetTheme(this, SettingsHelper.getTheme(this));
+        ChanUrls.setTor(this, SettingsHelper.getTorStatus(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thread);
         Ion.getDefault(getApplicationContext()).getCache().setMaxSize(150 * 1024 * 1024);

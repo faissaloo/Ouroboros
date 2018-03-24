@@ -18,6 +18,7 @@ import com.luorrak.ouroboros.util.InfiniteDbHelper;
 import com.luorrak.ouroboros.util.Media;
 import com.luorrak.ouroboros.util.SettingsHelper;
 import com.luorrak.ouroboros.util.Util;
+import com.luorrak.ouroboros.util.ChanUrls;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,6 +53,7 @@ public class DeepZoomActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Util.onActivityCreateSetTheme(this, SettingsHelper.getTheme(this));
+        ChanUrls.setTor(this, SettingsHelper.getTorStatus(this));
         // TODO: 2/12/16 figure out something better to do here besides making it black
         if (Build.VERSION.SDK_INT >= 21){
             getWindow().setStatusBarColor(getResources().getColor(R.color.md_black_1000));

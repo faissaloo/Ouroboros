@@ -1,5 +1,8 @@
 package com.luorrak.ouroboros.util;
 
+import info.guardianproject.netcipher.proxy.OrbotHelper;
+import com.koushikdutta.ion.Ion;
+import android.content.Context;
 import android.net.Uri;
 
 /**
@@ -204,17 +207,20 @@ public class ChanUrls {
         return builder.toString();
     }
     
-    public static void setTor(boolean enabled)
+    public static void setTor(Context context, boolean enabled)
     {
         if (enabled)
         {
             scheme = "http";
             domainName = "oxwugzccvk3dk6tj.onion";
+            OrbotHelper.requestStartTor(context);
+            Ion.getDefault(context).configure().proxy("127.0.0.1", 8118);
         }
         else
         {
             scheme = "https";
             domainName = "8ch.net";
+            Ion.getDefault(context).configure().disableSecureProxy();
         }
         postSubdomainName = "sys."+domainName;
     }
