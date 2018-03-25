@@ -1,6 +1,8 @@
+*.lock
 *.swp
 *.iml
 /.gradle
+/.gradle/*
 /.idea
 /build
 /gradle
