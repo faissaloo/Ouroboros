@@ -2,14 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.luorrak.ouroboros"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 34
-        versionName "0.10.5.1"
+        versionName "0.10.6.0"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
