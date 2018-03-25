@@ -215,14 +215,15 @@ public class ChanUrls {
             domainName = "oxwugzccvk3dk6tj.onion";
             OrbotHelper.requestStartTor(context);
             Ion.getDefault(context).configure().proxy("127.0.0.1", 8118);
+            postSubdomainName = domainName;
         }
         else
         {
             scheme = "https";
             domainName = "8ch.net";
             Ion.getDefault(context).configure().disableSecureProxy();
+            postSubdomainName = "sys."+domainName;
         }
-        postSubdomainName = "sys."+domainName;
     }
     
     public static String getDomain()
