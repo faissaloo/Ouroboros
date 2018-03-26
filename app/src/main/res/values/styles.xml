@@ -22,6 +22,7 @@
 
         <item name="divider_color">@color/md_purple_100</item>
         <item name="reply_button">@color/md_purple_500</item>
+        <item name="reply_background">@color/md_grey_800</item>
     </style>
 
     <!-- Dark application theme. -->
@@ -43,6 +44,7 @@
 
         <item name="divider_color">@color/md_teal_100</item>
         <item name="reply_button">@color/md_teal_500</item>
+        <item name="reply_background">@color/md_grey_800</item>
     </style>
 
     <style name="AppTheme.Blue">
@@ -62,6 +64,20 @@
         <item name="android:textColorLink">@color/md_blue_500</item>
         <item name="divider_color">@color/md_grey_500</item>
         <item name="reply_button">@color/md_grey_500</item>
+    </style>
+
+    <style name="AppTheme.Black" parent="AppThemeDark">
+        <item name="reply_background">@color/md_black_1000</item>
+        <item name="colorPrimary">@color/md_black_1000</item>
+        <item name="colorPrimaryDark">@color/md_black_1000</item>
+        <item name="colorAccent">@color/md_purple_500</item>
+
+        <item name="window_background">@color/md_black_1000</item>
+        <item name="drawer_background">@color/md_black_1000</item>
+        <item name="card_background">@color/md_black_1000</item>
+
+        <item name="divider_color">@color/md_purple_300</item>
+        <item name="reply_button">@color/md_purple_500</item>
     </style>
 
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

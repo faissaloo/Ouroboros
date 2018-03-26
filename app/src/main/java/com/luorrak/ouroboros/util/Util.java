@@ -54,6 +54,7 @@ public class Util {
     private static final int THEME_DARK = 1;
     private static final int THEME_BLUE = 2;
     private static final int THEME_GREY = 3;
+    private static final int THEME_BLACK = 4;
 
 
 
@@ -93,6 +94,9 @@ public class Util {
                 break;
             case THEME_GREY:
                 context.setTheme(R.style.AppTheme_Grey);
+                break;
+            case THEME_BLACK:
+                context.setTheme(R.style.AppTheme_Black);
                 break;
         }
     }
