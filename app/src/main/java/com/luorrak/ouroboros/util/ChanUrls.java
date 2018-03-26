@@ -23,7 +23,6 @@ import android.net.Uri;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class ChanUrls {
-
     private static final String CATALOG_ENDPOINT = "catalog.json"; //http(s)://siteurl/board/catalog.json
     private static final String THREAD_FOLDER = "res"; //http(s):///siteurl/board/res/threadnumber.json
     private static final String THREAD_ENDPOINT = ".json";
@@ -38,6 +37,7 @@ public class ChanUrls {
     private static String scheme = "https";
     private static String domainName = "8ch.net";
     private static String postSubdomainName = "sys."+domainName;
+    public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; rv:52.0) Gecko/20100101 Firefox/52.0"; //Most common user agent to help anonymise traffic
 
     /**
      * Determine if the file uses an older 8chan URL.
@@ -224,6 +224,7 @@ public class ChanUrls {
             Ion.getDefault(context).configure().disableSecureProxy();
             postSubdomainName = "sys."+domainName;
         }
+        Ion.getDefault(context).configure().userAgent("Mozilla/5.0 (Windows NT 6.1; rv:52.0) Gecko/20100101 Firefox/52.0");
     }
     
     public static String getDomain()
