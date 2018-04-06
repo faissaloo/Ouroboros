@@ -63,6 +63,7 @@ public class CommentParser {
         <p class="body-line ltr ">normal text</p>
         <p class="body-line ltr "><span class="heading">Red Text</span></p>
         <p class="body-line ltr quote">&gt;Green Text</p>
+        <p class="body-line ltr rquote">&lt;Pink Text</p>
         <p class="body-line ltr "><span class="spoiler">Spoiler Text</span></p>
         <p class="body-line ltr "><em>Italic Text</em></p>
         <p class="body-line ltr "><strong>Bold Text</strong></p>
@@ -120,6 +121,9 @@ public class CommentParser {
 
                 if (bodyLine.className().equals("body-line ltr quote")){
                     processedText = TextUtils.concat(processedText, parseGreenText(new SpannableString(parseFormatting(bodyLine, currentBoard, resto, fragmentManager, infiniteDbHelper))));
+                    processedText = TextUtils.concat(processedText, "\n");
+                } else if (bodyLine.className().equals("body-line ltr rquote")){
+                    processedText = TextUtils.concat(processedText, parsePinkText(new SpannableString(parseFormatting(bodyLine, currentBoard, resto, fragmentManager, infiniteDbHelper))));
                     processedText = TextUtils.concat(processedText, "\n");
                 } else if (bodyLine.className().equals("body-line ltr")){
                     if (bodyLine.children().size() == 0){
@@ -207,6 +211,11 @@ public class CommentParser {
     private CharSequence parseGreenText(SpannableString greenText){
         greenText.setSpan(new ForegroundColorSpan(Color.parseColor("#789922")), 0, greenText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return greenText;
+    }
+
+    private CharSequence parsePinkText(SpannableString pinkText){
+        pinkText.setSpan(new ForegroundColorSpan(Color.parseColor("#E0727F")), 0, pinkText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return pinkText;
     }
 
     private CharSequence parseSpoilerText(SpannableString spoilerText){
