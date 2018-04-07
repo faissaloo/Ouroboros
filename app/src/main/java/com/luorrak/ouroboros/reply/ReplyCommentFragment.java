@@ -298,8 +298,7 @@ public class ReplyCommentFragment extends Fragment {
      * @author paulburke
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static String getPath(final Context context, final Uri uri) {
-
+    private static String getPath(Context context, final Uri uri) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
@@ -356,7 +355,6 @@ public class ReplyCommentFragment extends Fragment {
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
-
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
